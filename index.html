@@ -57,15 +57,41 @@
                     </div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
+                <div class="grid md:grid-cols-3 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Lokasi Kejadian *</label>
-                        <input type="text" id="lokasi" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Kabupaten/Kota, Kecamatan, Desa">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kabupaten/Kota *</label>
+                        <select id="kabupaten" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="">Pilih Kabupaten/Kota</option>
+                            <option value="Kota Palu">Kota Palu</option>
+                            <option value="Kabupaten Donggala">Kabupaten Donggala</option>
+                            <option value="Kabupaten Sigi">Kabupaten Sigi</option>
+                            <option value="Kabupaten Parigi Moutong">Kabupaten Parigi Moutong</option>
+                            <option value="Kabupaten Tojo Una-Una">Kabupaten Tojo Una-Una</option>
+                            <option value="Kabupaten Poso">Kabupaten Poso</option>
+                            <option value="Kabupaten Morowali">Kabupaten Morowali</option>
+                            <option value="Kabupaten Morowali Utara">Kabupaten Morowali Utara</option>
+                            <option value="Kabupaten Banggai">Kabupaten Banggai</option>
+                            <option value="Kabupaten Banggai Kepulauan">Kabupaten Banggai Kepulauan</option>
+                            <option value="Kabupaten Banggai Laut">Kabupaten Banggai Laut</option>
+                            <option value="Kabupaten Tolitoli">Kabupaten Tolitoli</option>
+                            <option value="Kabupaten Buol">Kabupaten Buol</option>
+                        </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nama Perusahaan</label>
-                        <input type="text" id="namaPerusahaan" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Nama perusahaan tambang (jika diketahui)">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kecamatan *</label>
+                        <select id="kecamatan" required disabled class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-gray-100">
+                            <option value="">Pilih kecamatan</option>
+                        </select>
                     </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Desa/Kelurahan *</label>
+                        <input type="text" id="desa" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Nama desa/kelurahan">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Perusahaan *</label>
+                    <input type="text" id="namaPerusahaan" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Nama perusahaan tambang">
                 </div>
 
                 <div>
@@ -149,7 +175,7 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8 mt-12">
         <div class="container mx-auto px-6 text-center">
-            <p>&copy; 2025 MATA Sulteng. Dinas Energi dan Sumber Daya Mineral Sulawesi Tengah.</p>
+            <p>&copy; 2024 MATA Sulteng. Bersama menjaga lingkungan Sulawesi Tengah.</p>
         </div>
     </footer>
 
@@ -160,6 +186,23 @@
         let allAduans = [];
         let currentPage = 0;
         const itemsPerPage = 5;
+
+        // Data kecamatan per kabupaten
+        const kecamatanData = {
+            "Kota Palu": ["Palu Barat", "Palu Selatan", "Palu Timur", "Palu Utara", "Tatanga", "Ulujadi", "Mantikulore", "Tawaeli"],
+            "Kabupaten Donggala": ["Banawa", "Banawa Selatan", "Banawa Tengah", "Balaesang", "Balaesang Tanjung", "Dampelas", "Labuan", "Marawola", "Marawola Barat", "Pinembani", "Rio Pakava", "Sindue", "Sindue Tobata", "Sindue Tombusabora", "Sirenja", "Sojol", "Sojol Utara", "Tanantovea", "Tomini"],
+            "Kabupaten Sigi": ["Biromaru", "Dolo", "Dolo Barat", "Dolo Selatan", "Gumbasa", "Kinovaro", "Kulawi", "Kulawi Selatan", "Lindu", "Marawola", "Nokilalaki", "Palolo", "Pipikoro", "Sigi Biromaru", "Tanambulava"],
+            "Kabupaten Parigi Moutong": ["Ampibabo", "Balinggi", "Bolano Lambunu", "Kasimbar", "Mepanga", "Moutong", "Ongka Malino", "Palasa", "Parigi", "Parigi Barat", "Parigi Selatan", "Parigi Tengah", "Parigi Utara", "Sausu", "Siniu", "Tinombo", "Tinombo Selatan", "Torue"],
+            "Kabupaten Tojo Una-Una": ["Ampana Kota", "Ampana Tete", "Batudaka", "Ratolindo", "Tojo", "Tojo Barat", "Ulubongka", "Una-Una", "Walea Besar", "Walea Kepulauan"],
+            "Kabupaten Poso": ["Lage", "Lore Barat", "Lore Peore", "Lore Selatan", "Lore Tengah", "Lore Timur", "Lore Utara", "North Lore", "Pamona Barat", "Pamona Puselemba", "Pamona Selatan", "Pamona Tenggara", "Pamona Timur", "Pamona Utara", "Poso Kota", "Poso Pesisir", "Poso Pesisir Selatan", "Poso Pesisir Utara"],
+            "Kabupaten Morowali": ["Bahodopi", "Baturube", "Bungku Barat", "Bungku Pesisir", "Bungku Selatan", "Bungku Tengah", "Bungku Timur", "Bungku Utara", "Lembo", "Mamosalato", "Menui Kepulauan", "Morowali", "Petasia", "Petasia Barat", "Petasia Timur", "Soyo Jaya", "Wita Ponda"],
+            "Kabupaten Morowali Utara": ["Bumi Raya", "Lembo Raya", "Mamuju Utara", "Morowali Utara", "Petasia Utara", "Soyo Jaya Utara"],
+            "Kabupaten Banggai": ["Banggai", "Banggai Utara", "Bualemo", "Kintom", "Lamala", "Luwuk", "Luwuk Selatan", "Luwuk Timur", "Luwuk Utara", "Masama", "Moilong", "Nuhon", "Pagimana", "Simpang Raya", "Toili", "Toili Barat", "Totikum", "Totikum Selatan"],
+            "Kabupaten Banggai Kepulauan": ["Banggai", "Bokan Kepulauan", "Bulagi", "Bulagi Selatan", "Bulagi Utara", "Kepulauan Banggai", "Labobo", "Totikum"],
+            "Kabupaten Banggai Laut": ["Banggai Laut", "Bangkurung", "Bulagi Tengah", "Tinangkung"],
+            "Kabupaten Tolitoli": ["Baolan", "Dampal Selatan", "Dampal Utara", "Dondo", "Galang", "Lampasio", "Ogodeide", "Tolitoli Utara"],
+            "Kabupaten Buol": ["Bokat", "Buol", "Buol Selatan", "Buol Utara", "Momunu", "Paleleh", "Paleleh Barat", "Tiloan"]
+        };
 
         // Fungsi untuk mengirim data ke Google Sheets
         async function kirimKeSpreadsheet(data) {
@@ -266,8 +309,7 @@
                     
                     <div class="mb-4">
                         <p class="text-gray-700 mb-2"><strong>Pelapor:</strong> ${aduan['Nama Pelapor'] || 'Anonim'}</p>
-                        <p class="text-gray-700 mb-2"><strong>No. HP:</strong> ${aduan['No HP'] || 'Tidak tersedia'}</p>
-                        ${aduan['Nama Perusahaan'] ? `<p class="text-gray-700 mb-2"><strong>Perusahaan:</strong> ${aduan['Nama Perusahaan']}</p>` : ''}
+                        <p class="text-gray-700 mb-2"><strong>Perusahaan:</strong> ${aduan['Nama Perusahaan'] || 'Tidak diketahui'}</p>
                         <p class="text-gray-700"><strong>Deskripsi:</strong> ${aduan['Deskripsi Aduan'] || 'Tidak ada deskripsi'}</p>
                     </div>
                     
@@ -340,10 +382,15 @@
             submitLoading.classList.remove('hidden');
             
             // Ambil data form
+            const kabupaten = document.getElementById('kabupaten').value;
+            const kecamatan = document.getElementById('kecamatan').value;
+            const desa = document.getElementById('desa').value.trim();
+            const lokasi = `${kabupaten}, ${kecamatan}, ${desa}`;
+            
             const formData = {
                 nama: document.getElementById('namaPelapor').value.trim(),
                 noHp: document.getElementById('noHp').value.trim(),
-                lokasi: document.getElementById('lokasi').value.trim(),
+                lokasi: lokasi,
                 perusahaan: document.getElementById('namaPerusahaan').value.trim(),
                 jenis: document.getElementById('jenisAduan').value,
                 deskripsi: document.getElementById('deskripsiAduan').value.trim()
@@ -393,10 +440,37 @@
             loadAduans();
         });
 
+        // Event listener untuk dropdown kabupaten
+        document.getElementById('kabupaten').addEventListener('change', function() {
+            const selectedKabupaten = this.value;
+            const kecamatanSelect = document.getElementById('kecamatan');
+            
+            // Reset kecamatan
+            kecamatanSelect.innerHTML = '<option value="">Pilih kecamatan</option>';
+            
+            if (selectedKabupaten && kecamatanData[selectedKabupaten]) {
+                // Enable kecamatan dropdown
+                kecamatanSelect.disabled = false;
+                kecamatanSelect.classList.remove('bg-gray-100');
+                
+                // Populate kecamatan options
+                kecamatanData[selectedKabupaten].forEach(kecamatan => {
+                    const option = document.createElement('option');
+                    option.value = kecamatan;
+                    option.textContent = kecamatan;
+                    kecamatanSelect.appendChild(option);
+                });
+            } else {
+                // Disable kecamatan dropdown
+                kecamatanSelect.disabled = true;
+                kecamatanSelect.classList.add('bg-gray-100');
+            }
+        });
+
         // Load data saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
             loadAduans();
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9715e20f43ed4083',t:'MTc1NTU2Njk5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98691715a4649ca4',t:'MTc1OTEyMzg0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
